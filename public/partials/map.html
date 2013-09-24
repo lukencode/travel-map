@@ -1,0 +1,70 @@
+
+
+<div id="content" class="pure-g-r">
+	<div class="pure-u-1-3 sidebar-wrap">
+		<div class="sidebar-content">
+			<div class="meta">
+				<h3>{{name}}</h3>		
+				<p ng-show="metaExpanded">{{description}}</p>	
+			</div>		
+
+			<div id="search" ng-show="isSearching">
+				<p class="info">Search for a city to add</p>
+				<form ng-submit="searchCity()" class="pure-form">
+					<input ng-model="search" type="text" class="pure-input-2-3" placeholder="eg 'Paris' or 'New York'">
+					<button type="submit" class="pure-button pure-button-primary pure-input-1-3">Search Cities</button>
+				</form>
+
+				<div id="search-results" ng-show="searchResults.length">
+					<ul>
+					    <li ng-repeat="result in searchResults">
+					    	<div class="address">{{result.formatted_address}}</div>
+
+					    	<button ng-click="centerMap(result.geometry.location)" class="pure-button pure-button-small"><i class="icon-screenshot"></i>
+					    	<button ng-click="selectCity(result)" class="pure-button pure-button-small pure-button-primary">Select</button>
+					    </li>
+					</ul>
+				</div>				
+			</div>
+
+			<div id="cities" ng-show="!isSearching">
+				<ul ng-show="cities.length">
+					<li ng-repeat="city in cities">
+						<a ng-click="openCity(city)" class="city-header">
+							<span class="days">{{city.days}}</span>
+							<span class="name">{{city.name}}</span>
+							<i class="icon-double-angle-down icon-2x"></i>
+						</a>
+						<div ng-show="city.open" class="expanded">
+							<div class="options">
+								<button ng-click="removeCity(city)">remove</button>
+							</div>
+							<div class="activities">
+								<h5>Activities</h5>
+
+								<ul class="suggested activity-list">
+									<li ng-repeat="activity in city.suggested_activities">
+										<span class="name">{{activity.place.name}}</span>
+										<img class="photo" ng-src="{{activity.photo}}" />
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+
+					<li class="add-city">
+						<a ng-click="addCity(city)"><i class="icon-map-marker"></i> Add a city</a>
+					</li>
+				</ul>
+
+				<div class="no-cities" ng-show="!cities.length">
+					<a ng-click="addCity()"><i class="icon-map-marker"></i> Add a city</a> to get started
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="pure-u-2-3">
+		<div id="map-canvas" style="width:100%; height:100%"></div>
+	</div>
+</div>
